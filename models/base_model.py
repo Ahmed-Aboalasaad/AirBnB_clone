@@ -7,6 +7,7 @@ import uuid
 from datetime import datetime
 import copy
 
+
 class BaseModel():
     def __init__(self) -> None:
         self.id = str(uuid.uuid4())
@@ -17,10 +18,10 @@ class BaseModel():
         string = f'[BaseModel] ({self.id}) {self.__dict__}'
         print(string)
         return string
-        
+
     def save(self) -> None:
         self.updated_at = datetime.now()
-    
+
     def to_dict(self):
         dict = copy.deepcopy(self.__dict__)
         dict['__class__'] = self.__class__.__name__
