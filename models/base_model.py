@@ -16,7 +16,6 @@ class BaseModel():
 
     def __str__(self) -> str:
         string = f'[BaseModel] ({self.id}) {self.__dict__}'
-        print(string)
         return string
 
     def save(self) -> None:
