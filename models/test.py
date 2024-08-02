@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Doc
 """
-from tmp_base_model import *
-from tmp_base_model import BaseModel
+from models.tmp_base_model import *
+from models.tmp_base_model import BaseModel
 
 
 class BaseModel(BaseModel):
