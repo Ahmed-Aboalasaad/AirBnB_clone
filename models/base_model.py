@@ -6,6 +6,7 @@ which defines all common attributes/methods for other classes
 import uuid
 from datetime import datetime
 import copy
+import json
 
 
 class BaseModel():
@@ -20,6 +21,9 @@ class BaseModel():
 
     def save(self) -> None:
         self.updated_at = datetime.now()
+        dict = self.to_dict()
+        with open('output.json', 'w') as json_file:
+            json.dump(dict, json_file, indent=4)
 
     def to_dict(self):
         dict = copy.deepcopy(self.__dict__)
