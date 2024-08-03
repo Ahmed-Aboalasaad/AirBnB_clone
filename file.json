@@ -1,10 +1,14 @@
 {
-    "<class 'models.base_model.BaseModel'>.1adde685-5336-4a59-90ae-f939d2555e97": {
-        "id": "1adde685-5336-4a59-90ae-f939d2555e97",
-        "created_at": "2024-08-03T07:59:34.437547",
-        "updated_at": "2024-08-03T07:59:34.437556",
-        "name": "My_First_Model",
-        "my_number": 89,
+    "<class 'models.base_model.BaseModel'>.dfaec1a9-86f2-43f1-b43c-6c1731e3d2ac": {
+        "id": "dfaec1a9-86f2-43f1-b43c-6c1731e3d2ac",
+        "created_at": "2024-08-04T00:24:38.666571",
+        "updated_at": "2024-08-04T00:24:38.666571",
+        "__class__": "BaseModel"
+    },
+    "<class 'models.base_model.BaseModel'>.99ee062a-2f86-4031-95e4-6dd213cca1b6": {
+        "id": "99ee062a-2f86-4031-95e4-6dd213cca1b6",
+        "created_at": "2024-08-04T00:24:38.666649",
+        "updated_at": "2024-08-04T00:24:38.666652",
         "__class__": "BaseModel"
     }
 }

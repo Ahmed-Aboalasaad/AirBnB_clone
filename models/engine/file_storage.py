@@ -8,8 +8,8 @@ import models
 class FileStorage():
 	def __init__(self) -> None:
 		self.__file_path = './file.json'
-		# Stores objects with keys like this: <class name>.id
 		self.__objects = {}
+		# __objects stores objects with keys like this: <class name>.id
 
 	def all(self) -> dict:
 		'''returns the dictionary __objects'''
@@ -31,23 +31,17 @@ class FileStorage():
 			json.dump(converted_objs, json_file, indent=4)
 
 	def reload(self):
-		'''deserializes the JSON file to __objects (only if the JSON file
+		'''deserializes the JSON file to __objects only if the JSON file
 		at __file_path exists. Otherwise, does nothing'''
 		# Stop the function is no such file exists
 		if not os.path.exists(self.__file_path):
-			print('didn\'t find such a file path')
 			return
 
-		print('+++ Reloading +++')
 		with open(self.__file_path, 'r') as json_file:
-			objects_dict = json.load(json_file)  # All objects dictionaries
+			all_obj_dicts = json.load(json_file)  # All objects dictionaries
 			# For each one, find the class, and create it
-			for key, obj in objects_dict.items():
-				class_name = obj['__class__']
+			for key, obj_dict in all_obj_dicts.items():
+				class_name = obj_dict['__class__']
 				_class = models.class_registry.get(class_name, None)
 				if _class:
-					self.__objects[key] = _class(**obj)
-				else:
-					print('didnt find such a class in the registry')
-					print(f'extracted class name: {class_name}')
-					print(f'Class registry: {models.class_registry}')
+					self.__objects[key] = _class(**obj_dict)
