@@ -1,2 +1,7 @@
 #!/usr/bin/python3
-# This is empty for now.. Just indicating it's a package
+''' The code that initiates this package '''
+from models.engine.file_storage import FileStorage
+
+class_registry = {}
+storage = FileStorage()
+storage.reload()

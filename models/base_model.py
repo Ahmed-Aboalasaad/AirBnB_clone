@@ -6,7 +6,8 @@ which defines all common attributes/methods for other classes
 import uuid
 from datetime import datetime
 import copy
-import json
+from models import storage
+from models import class_registry
 
 
 class BaseModel():
@@ -27,11 +28,12 @@ class BaseModel():
             for key, value in kwargs.items():
                 setattr(self, key, value)
 
-        # empty argument list
+        # empty argument list (new instance)
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            storage.new(self)
 
     def __str__(self) -> str:
         string = f'[BaseModel] ({self.id}) {self.__dict__}'
@@ -39,9 +41,7 @@ class BaseModel():
 
     def save(self) -> None:
         self.updated_at = datetime.now()
-        # dict = self.to_dict()
-        # with open('output.json', 'w') as json_file:
-        #     json.dump(dict, json_file, indent=4)
+        storage.save()
 
     def to_dict(self):
         dict = copy.deepcopy(self.__dict__)
@@ -49,3 +49,7 @@ class BaseModel():
         dict['created_at'] = dict['created_at'].isoformat()
         dict['updated_at'] = dict['updated_at'].isoformat()
         return dict
+
+
+class_registry["BaseModel"] = BaseModel
+print('----- Added to the class registry ------')

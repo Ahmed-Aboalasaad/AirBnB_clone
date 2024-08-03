@@ -1,0 +1,10 @@
+{
+    "<class 'models.base_model.BaseModel'>.1adde685-5336-4a59-90ae-f939d2555e97": {
+        "id": "1adde685-5336-4a59-90ae-f939d2555e97",
+        "created_at": "2024-08-03T07:59:34.437547",
+        "updated_at": "2024-08-03T07:59:34.437556",
+        "name": "My_First_Model",
+        "my_number": 89,
+        "__class__": "BaseModel"
+    }
+}
