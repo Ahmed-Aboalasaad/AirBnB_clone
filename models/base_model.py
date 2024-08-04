@@ -35,8 +35,7 @@ class BaseModel():
             models.storage.new(self)
 
     def __str__(self) -> str:
-        string = f'[BaseModel] ({self.id}) {self.__dict__}'
-        return string
+        return f'[{self.__class__.__name__}] ({self.id}) {self.__dict__}'
 
     def save(self) -> None:
         self.updated_at = datetime.now()
