@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 '''Doc: Contains the State class'''
-from user import User
+from models.base_model import BaseModel
 
 
-class State(User):
+class State(BaseModel):
     '''A class for states'''
     name = ''

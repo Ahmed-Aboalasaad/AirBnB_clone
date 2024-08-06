@@ -42,12 +42,14 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
+        '''Makes the empty command do nothing'''
         return False
 
     def do_create(self, arg):
         '''
         Doc: Creates a new instance of the given class, saves it to the JSON
-        file and prints the id. Ex: $ create BaseModel
+        file and prints the id.
+        Ex: $ create BaseModel
         '''
         if arg == '':
             print('** class name missing **')
@@ -116,7 +118,8 @@ class HBNBCommand(cmd.Cmd):
         '''
         Prints string representation of all instances
         (of the given type, if any was provided)
-        Ex: $ all BaseModel    OR: $ all
+        Ex: $ all BaseModel
+        OR: $ all
         '''
         to_print = []
         if arg == '':

@@ -11,14 +11,6 @@ class User(BaseModel):
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
-        if 'email' in kwargs:
-            self.email = kwargs['email']
-        if 'password' in kwargs:
-            self.password = kwargs['password']
-        if 'first_name' in kwargs:
-            self.first_name = kwargs['first_name']
-        if 'last_name' in kwargs:
-            self.last_name = kwargs['last_name']
 
     def to_dict(self) -> dict:
         new_dict = super().to_dict()

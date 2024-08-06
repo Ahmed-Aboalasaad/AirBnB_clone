@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 '''Doc: Contains the Place class'''
-from user import User
+from models.base_model import BaseModel
 
 
-class Place(User):
+class Place(BaseModel):
     '''A class for Places'''
     city_id = ''
     user_id = ''

@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 '''Doc: Contains the Amenity class'''
-from user import User
+from models.base_model import BaseModel
 
 
-class Amenity(User):
+class Amenity(BaseModel):
     '''A class for amenities'''
     name = ''
