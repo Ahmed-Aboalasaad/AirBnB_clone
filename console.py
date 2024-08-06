@@ -10,6 +10,9 @@ Rules:
 '''
 import cmd
 import models
+import sys
+import ast
+from typing import Tuple
 
 
 class HBNBCommand(cmd.Cmd):
@@ -188,6 +191,57 @@ class HBNBCommand(cmd.Cmd):
             return
         setattr(obj, attribute, value)
         models.storage.save()
+
+    def onecmd(self, line: str) -> bool:
+        '''
+        Overrwriting the onecmd() method to process commands onctaining dots
+        '''
+        # Simple Commands
+        if not ('(' in line and ')' in line):
+            return self().onecmd(line)
+        return self.process_dot_command(line)
+
+    def process_dot_command(self, line: str) -> bool:
+        '''
+        Handles a command that contains a dot.
+        Splits it into a class name and a method
+        Ex:   > User.all()    becomes   > all User
+        '''
+        if '.' not in line:
+            return self.onecmd(line)
+        class_name, method_call = line.split('.', 1)
+        command_name, args = self.process_method_call(method_call)
+        self.onecmd(command_name + class_name + args)
+        
+
+    def process_method_call(self, method_call) -> Tuple[str, str]:
+        '''
+        Takes the method call of a class and returns the command name & the args
+        - The input is a method-like call of a command, optionally with args
+        Ex: input = 'destroy(some_id)   ->   output = 'destroy', ['some_id']
+        '''
+        # Function-like Comands
+        try:  # Try to Parse the Command
+            # Using the abstract syntax tree module
+            # to parse the method_call in the evaluation mode
+            tree = ast.parse(method_call, mode='eval')
+
+            # Check if the parsed tree represents a function call
+            if isinstance(tree, ast.Expression) and isinstance(tree.body, ast.Call):
+                # Extract the method name from the tree.body.func attribute
+                if isinstance(tree.body.func, ast.Attribute):
+                    command_name = tree.body.func.attr
+                else:
+                    command_name = None
+                # Extract arguments
+                args = [ast.literal_eval(arg) for arg in tree.body.args]
+                return command_name, ' '.join(args)
+
+        except Exception as e:
+            print('Abo: Error Parsing a function-like command:\
+                (invalid syntax)',file=sys.stderr)
+            return '', []
+        
 
 
 if __name__ == '__main__':
