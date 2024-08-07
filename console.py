@@ -194,44 +194,24 @@ class HBNBCommand(cmd.Cmd):
 
     def onecmd(self, line: str) -> bool:
         '''
-        Overrwriting the onecmd() method to process commands onctaining dots
+        Overrwriting the onecmd() method to process function-like commands
+        Ex: User.destroy(some_id)  ->  destroy User some_id
         '''
         # [1] Handle Simple Commands
         if not ('.' in line and '(' in line and ')' in line):
-            return self().onecmd(line)
+            return super().onecmd(line)
 
-        # [2] Handle Function-Like commands
+        # [2] Handle Function-Like commands (Extract Data from it)
         class_name, command_call = line.split('.', 1)
+        command_name, args = command_call.split('(', 1)
+        args = args[:-1]
+        args = args.split(',')
+        args = [arg.strip() for arg in args]
+        args = ' '.join(args)
 
-        # Extract from the command call the command_name, and its arguments
-        try:
-            # Try to Parse the Command
-            # Using the abstract syntax tree module evaluation mode
-            tree = ast.parse(command_call, mode='eval')
-
-            # Make sure the parsed tree looks like a function call
-            is_fun_call = isinstance(tree, ast.Expression)\
-                          and isinstance(tree.body, ast.Call)
-            if not is_fun_call:
-                raise Exception('Abo: Invalid syntax\
-                                for a function-like command')
-
-            # Extract the method name
-            if not isinstance(tree.body.func, ast.Attribute):
-                raise Exception('Abo: Invalid syntax\
-                                for a function-like command')
-            command_name = tree.body.func.attr
-
-            # Extract arguments
-            args = [ast.literal_eval(arg) for arg in tree.body.args]
-
-        except Exception as e:
-            print(e)
-            return False
-        
         # [3] Call the resolved command
         command = command_name + ' ' + class_name + ' ' + ' '.join(args)
-        return self.onecmd(command)
+        return super().onecmd(command)
 
 
 if __name__ == '__main__':
