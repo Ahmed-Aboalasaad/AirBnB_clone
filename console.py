@@ -205,6 +205,18 @@ class HBNBCommand(cmd.Cmd):
         class_name, command_call = line.split('.', 1)
         command_name, args = command_call.split('(', 1)
         args = args[:-1]
+
+        # special case for updating with a dictionary represenataion
+        if ', {' in args or ',{' in args:
+            id, dict = args.split(',', 1)
+            id = id.strip()
+            dict = eval(dict)
+            for attribute, value in dict.items():
+                command = command_name + ' ' + class_name + ' ' +\
+                          id + ' ' + str(attribute) + ' ' + str(value)
+                super().onecmd(command)
+            return False
+
         args = args.split(',')
         args = [arg.strip() for arg in args]
         args = ' '.join(args)
