@@ -213,6 +213,26 @@ class HBNBCommand(cmd.Cmd):
         command = command_name + ' ' + class_name + ' ' + ' '.join(args)
         return super().onecmd(command)
 
+    def do_count(self, arg):
+        '''
+        Counts the number of instances of a given class
+        Ex: count BaseModel 121212
+        '''
+        args = arg.split()
+        if len(args) == 0:
+            print('** class name missing **')
+            return
+        class_name = args[0]
+        _class = models.class_registry.get(class_name)
+        if _class is None:
+            print('** class doesn\'t exist **')
+            return
+        counter = 0
+        for obj in models.storage.all().values():
+            if obj.__class__.__name__ == class_name:
+                counter += 1
+        print(counter)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
