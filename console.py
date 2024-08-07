@@ -208,9 +208,15 @@ class HBNBCommand(cmd.Cmd):
         args = args.split(',')
         args = [arg.strip() for arg in args]
         args = ' '.join(args)
+        # print(f'line = {line}')
+        # print(f'class name = {class_name}')
+        # print(f'command call = {command_call}')
+        # print(f'command name = {command_name}')
+        # print(f'args = {args}')
 
         # [3] Call the resolved command
-        command = command_name + ' ' + class_name + ' ' + ' '.join(args)
+        command = command_name + ' ' + class_name + ' ' + args
+        # print(f'translated command: {command}')
         return super().onecmd(command)
 
     def do_count(self, arg):
