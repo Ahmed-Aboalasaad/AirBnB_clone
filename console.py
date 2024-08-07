@@ -196,52 +196,42 @@ class HBNBCommand(cmd.Cmd):
         '''
         Overrwriting the onecmd() method to process commands onctaining dots
         '''
-        # Simple Commands
-        if not ('(' in line and ')' in line):
+        # [1] Handle Simple Commands
+        if not ('.' in line and '(' in line and ')' in line):
             return self().onecmd(line)
-        return self.process_dot_command(line)
 
-    def process_dot_command(self, line: str) -> bool:
-        '''
-        Handles a command that contains a dot.
-        Splits it into a class name and a method
-        Ex:   > User.all()    becomes   > all User
-        '''
-        if '.' not in line:
-            return self.onecmd(line)
-        class_name, method_call = line.split('.', 1)
-        command_name, args = self.process_method_call(method_call)
-        self.onecmd(command_name + class_name + args)
-        
+        # [2] Handle Function-Like commands
+        class_name, command_call = line.split('.', 1)
 
-    def process_method_call(self, method_call) -> Tuple[str, str]:
-        '''
-        Takes the method call of a class and returns the command name & the args
-        - The input is a method-like call of a command, optionally with args
-        Ex: input = 'destroy(some_id)   ->   output = 'destroy', ['some_id']
-        '''
-        # Function-like Comands
-        try:  # Try to Parse the Command
-            # Using the abstract syntax tree module
-            # to parse the method_call in the evaluation mode
-            tree = ast.parse(method_call, mode='eval')
+        # Extract from the command call the command_name, and its arguments
+        try:
+            # Try to Parse the Command
+            # Using the abstract syntax tree module evaluation mode
+            tree = ast.parse(command_call, mode='eval')
 
-            # Check if the parsed tree represents a function call
-            if isinstance(tree, ast.Expression) and isinstance(tree.body, ast.Call):
-                # Extract the method name from the tree.body.func attribute
-                if isinstance(tree.body.func, ast.Attribute):
-                    command_name = tree.body.func.attr
-                else:
-                    command_name = None
-                # Extract arguments
-                args = [ast.literal_eval(arg) for arg in tree.body.args]
-                return command_name, ' '.join(args)
+            # Make sure the parsed tree looks like a function call
+            is_fun_call = isinstance(tree, ast.Expression)\
+                          and isinstance(tree.body, ast.Call)
+            if not is_fun_call:
+                raise Exception('Abo: Invalid syntax\
+                                for a function-like command')
+
+            # Extract the method name
+            if not isinstance(tree.body.func, ast.Attribute):
+                raise Exception('Abo: Invalid syntax\
+                                for a function-like command')
+            command_name = tree.body.func.attr
+
+            # Extract arguments
+            args = [ast.literal_eval(arg) for arg in tree.body.args]
 
         except Exception as e:
-            print('Abo: Error Parsing a function-like command:\
-                (invalid syntax)',file=sys.stderr)
-            return '', []
+            print(e)
+            return False
         
+        # [3] Call the resolved command
+        command = command_name + ' ' + class_name + ' ' + ' '.join(args)
+        return self.onecmd(command)
 
 
 if __name__ == '__main__':
