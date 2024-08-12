@@ -10,8 +10,6 @@ Rules:
 '''
 import cmd
 import models
-import sys
-import ast
 from typing import Tuple
 
 
